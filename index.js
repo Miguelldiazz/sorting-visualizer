@@ -221,17 +221,24 @@ shuffle_button.onclick = () => {
     draw(arr, 'black');
 }
 
-sort_button.onclick = () => {
+function disable_buttons() {
     sort_button.disabled = true;
     shuffle_button.disabled = true;
     array_size.disabled = true;
+}
+
+sort_button.onclick = () => {    
     if(bubble_option.checked) {
+        disable_buttons();
         bubbleSort(arr);
     } else if(select_option.checked) {
+        disable_buttons();
         selectSort(arr);
     } else if(merge_option.checked) {
+        disable_buttons();
         mergeSort(arr, 0, arr.length - 1).then(() => {end()});
     } else if(quick_option.checked) {
+        disable_buttons();
         quickSort(arr, 0, arr.length - 1).then(() => {end()});
     }
 }
