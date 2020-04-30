@@ -17,6 +17,7 @@ const sleep_time = 1;
 let bubble_option = document.getElementById("bubbleSort");
 let select_option = document.getElementById("selectSort");
 let merge_option = document.getElementById("mergeSort");
+let quick_option = document.getElementById("quickSort");
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -67,10 +68,11 @@ function draw(arr, color) {
     }
 }
 
-function fin() {
+function end() {
     draw(arr, 'green');
     sort_button.disabled = false;
     shuffle_button.disabled = false;
+    array_size.disabled = false;
 }
 
 async function bubbleSort(arr) {
@@ -88,7 +90,7 @@ async function bubbleSort(arr) {
             }
         }
     }
-    fin();
+    end();
 }
 
 async function selectSort(arr) {
@@ -112,7 +114,7 @@ async function selectSort(arr) {
         }
         
     }
-    fin();
+    end();
 }
 
 async function merge(arr, l, m, r) { 
@@ -179,17 +181,39 @@ async function mergeSort(arr, l, r) {
     if (l < r) {
         let m = l+Math.floor((r-l)/2);
         await mergeSort(arr, l, m);
-        draw(arr, 'black');
-        await sleep(sleep_time);
-
         await mergeSort(arr, m+1, r);
-        draw(arr, 'black');
-        await sleep(sleep_time);
-
         await merge(arr, l, m, r);
-        draw(arr, 'black');
-        await sleep(sleep_time);
     }
+} 
+
+async function partition (arr, low, high) { 
+    let pivot = arr[high];
+    let i = (low - 1); 
+  
+    for (let j = low; j <= high- 1; j++) { 
+        draw_line(arr[i], i, 'red');
+        draw_line(arr[j], j, 'red');
+        await sleep(sleep_time);
+        draw(arr, 'black');
+        if (arr[j] < pivot) { 
+            draw_line(arr[j], j, 'green');
+            draw_line(arr[i], i, 'green');
+            await sleep(sleep_time);
+            draw(arr, 'black');
+            i++;
+            swap(arr, i, j); 
+        } 
+    } 
+    swap(arr, i + 1, high); 
+    return i + 1; 
+}
+
+async function quickSort(arr, low, high) { 
+    if (low < high) {
+        let p = await partition(arr, low, high);      
+        await quickSort(arr, low, p - 1); 
+        await quickSort(arr, p + 1, high); 
+    } 
 } 
 
 shuffle_button.onclick = () => {
@@ -200,12 +224,15 @@ shuffle_button.onclick = () => {
 sort_button.onclick = () => {
     sort_button.disabled = true;
     shuffle_button.disabled = true;
+    array_size.disabled = true;
     if(bubble_option.checked) {
         bubbleSort(arr);
     } else if(select_option.checked) {
         selectSort(arr);
     } else if(merge_option.checked) {
-        mergeSort(arr, 0, arr.length - 1).then(() => {fin()});
+        mergeSort(arr, 0, arr.length - 1).then(() => {end()});
+    } else if(quick_option.checked) {
+        quickSort(arr, 0, arr.length - 1).then(() => {end()});
     }
 }
 
