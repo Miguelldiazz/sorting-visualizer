@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorting algorythms visualizer</title>
+</head>
+<body>
+    <canvas id="visualizer"></canvas>
+    <div id="menu">
+        <button id="shuffle">Shuffle</button> <button id="sort">Sort</button> <br>
+        <label for="size">Array size</label>
+        <input type="range" name="size" id="size" min="10" max="500" value="40"> <br>
+        <input type="radio" id="selectSort" name="algorythm"> <label for="selectSort">Selection sort</label> <br>
+        <input type="radio" id="bubbleSort" name="algorythm"> <label for="bubbleSort">Bubble sort</label> <br>
+        <input type="radio" id="mergeSort" name="algorythm"> <label for="mergeSort">Merge sort</label> <br>
+        
+    </div>
+    <script src="index.js"></script>
+</body>
+</html>
